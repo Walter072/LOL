@@ -1,4 +1,4 @@
-# LOL HUB Features
+# LOL Features
  Main Tab
 > Inf stamina
 > Inf sanity
