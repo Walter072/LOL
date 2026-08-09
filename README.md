@@ -25,4 +25,5 @@
  The Hub
 > Spinner
 > Auto Spin
+> Inventory Fixer
 > 
