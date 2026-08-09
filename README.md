@@ -9,6 +9,7 @@
 > Ability Cooldown Modifier
 > Ability Spam
 > Disable Puddles Damage
+> Remover Trident VFX (for potato pc)
 > Disable Waves
 > Remove Portals
 > 
@@ -18,7 +19,10 @@
 > Players ESP
 > 
  Misc
-> Auto Spin
+> Auto Consume
 > Item Aura
+> 
+ The Hub
 > Spinner
+> Auto Spin
 > 
