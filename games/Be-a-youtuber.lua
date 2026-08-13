@@ -21,7 +21,7 @@ local window = ui.newWindow({
 local mainMenu = window:addMenu({
     text = 'Main'
 })
-local miscMenu = windows:addMenu({
+local miscMenu = window:addMenu({
     text = 'Misc'
 })
 local miscsection = miscMenu:addSection({
@@ -29,7 +29,7 @@ local miscsection = miscMenu:addSection({
     side = 'left',
     showMinButton = true
 })
-local sectionleft = mainMenu:addSection({
+local mainsection = mainMenu:addSection({
     text = 'Farm',
     side = 'left',
     showMinButton = true 
@@ -80,7 +80,7 @@ miscsection:addToggle({
 end)
 local rebirthloop
 
-sectionleft:addToggle({
+mainsection:addToggle({
     text = "Auto rebirth",
     state = false
 }):bindToEvent("onToggle", function(newState)
