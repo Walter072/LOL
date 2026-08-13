@@ -16,6 +16,7 @@ local BASE = "https://raw.githubusercontent.com/Walter072/LOL/main/games/"
 
 local games = {
     [5088137] = "Da-Backrooms.lua",
+    [490911723] = "+1-pickaxe.lua",
 }
 
 local file = games[game.CreatorId] or places[game.PlaceId]
@@ -45,7 +46,6 @@ else
     warn("This game is not supported")
     warn("[Loader] CreatorId:", game.CreatorId, "| PlaceId:", game.PlaceId)
 
-    -- Opcional: notificar al jugador
     pcall(function()
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Loader",
