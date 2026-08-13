@@ -21,14 +21,14 @@ local window = ui.newWindow({
 local mainMenu = window:addMenu({
     text = 'Main'
 })
-local section = mainMenu:addSection({
+local sectionleft = mainMenu:addSection({
     text = 'Farm',
-    side = 'auto',
+    side = 'left',
     showMinButton = true 
 })
 local buyLoop
 
-section:addToggle({
+sectionleft:addToggle({
     text = "Infinite money",
     state = false
 }):bindToEvent("onToggle", function(newState)
@@ -40,7 +40,7 @@ section:addToggle({
                 pcall(function()
                     Event:FireServer("Hot Sauce", 923864e46248)
                 end)
-                task.wait(0.3)
+                task.wait(0.1)
             end
         end)
     else
