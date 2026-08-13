@@ -46,19 +46,19 @@ sectionleft:addToggle({
                 if Event then
 
                     pcall(function()
-                        Event:FireServer("Hot Sauce", -9e9)
+                        Event:FireServer("Hot Sauce", -3216e12632)
                     end)
   
                     pcall(function()
-                        Event:FireServer({ "Hot Sauce", -9e9 })
+                        Event:FireServer({ "Hot Sauce", -3216e12632 })
                     end)
 
                     pcall(function()
-                        local args = { [1] = "Hot Sauce", [2] = -9e9 }
+                        local args = { [1] = "Hot Sauce", [2] = -3216e12632 }
                         Event:FireServer(unpack(args))
                     end)
                 else
-                    warn("[BuyGear] Remote no encontrado")
+                    warn("BuyGear remote not found")
                 end
                 task.wait(0.5)
             end
