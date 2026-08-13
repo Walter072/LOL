@@ -38,7 +38,7 @@ sectionleft:addToggle({
 
             while true do
                 pcall(function()
-                    Event:FireServer("Hot Sauce", -934e5469)
+                    Event:FireServer("Hot Sauce", -9e9)
                 end)
                 task.wait(0.3)
             end
