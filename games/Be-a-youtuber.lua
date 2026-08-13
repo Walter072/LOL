@@ -21,6 +21,14 @@ local window = ui.newWindow({
 local mainMenu = window:addMenu({
     text = 'Main'
 })
+local miscMenu = windows:addMenu({
+    text = 'Misc'
+})
+local miscsection = miscMenu:addSection({
+    text = 'Misc',
+    side = 'left',
+    showMinButton = true
+})
 local sectionleft = mainMenu:addSection({
     text = 'Farm',
     side = 'left',
@@ -35,7 +43,7 @@ local function getBuyGearRemote()
     return folder:FindFirstChild("buyGear") or folder:FindFirstChild("BuyGear")
 end
 
-sectionleft:addToggle({
+miscsection:addToggle({
     text = "Infinite Money",
     state = false
 }):bindToEvent("onToggle", function(newState)
