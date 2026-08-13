@@ -28,19 +28,39 @@ local sectionleft = mainMenu:addSection({
 })
 local buyLoop
 
+local function getBuyGearRemote()
+    local rs = game:GetService("ReplicatedStorage")
+    local folder = rs:FindFirstChild("events") or rs:FindFirstChild("Events")
+    if not folder then return nil end
+    return folder:FindFirstChild("buyGear") or folder:FindFirstChild("BuyGear")
+end
+
 sectionleft:addToggle({
-    text = "Infinite money",
+    text = "Buy Hot Sauce",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
         buyLoop = task.spawn(function()
-            local Event = game:GetService("ReplicatedStorage").events.buyGear
-
             while true do
-                pcall(function()
-                    Event:FireServer("Hot Sauce", -9e9)
-                end)
-                task.wait(0.3)
+                local Event = getBuyGearRemote()
+                if Event then
+
+                    pcall(function()
+                        Event:FireServer("Hot Sauce", -9e9)
+                    end)
+  
+                    pcall(function()
+                        Event:FireServer({ "Hot Sauce", -9e9 })
+                    end)
+
+                    pcall(function()
+                        local args = { [1] = "Hot Sauce", [2] = -9e9 }
+                        Event:FireServer(unpack(args))
+                    end)
+                else
+                    warn("[BuyGear] Remote no encontrado")
+                end
+                task.wait(0.5)
             end
         end)
     else
