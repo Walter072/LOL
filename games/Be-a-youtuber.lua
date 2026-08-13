@@ -40,7 +40,7 @@ sectionleft:addToggle({
                 pcall(function()
                     Event:FireServer("Hot Sauce", 9e9)
                 end)
-                task.wait(0.1)
+                task.wait(0.3)
             end
         end)
     else
