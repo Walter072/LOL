@@ -107,3 +107,53 @@ section1:addToggle({
         end
     end
 end)
+local claimallloop 
+
+section1:addToggle({
+    text = "Auto Claim All",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        claimallloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.claimAll
+
+            while true do
+                pcall(function()
+                    Event:FireServer()
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if claimallloop then
+            task.cancel(claimallloop)
+            claimallloop = nil
+        end
+    end
+end)
+local uploadallloop
+
+section1:addToggle({
+    text ="Auto Upload All",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        uploadallloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.uploadAll
+
+            while true do
+                pcall(function()
+                    Event:FireServer()
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if uploadallloop then
+            task.cancel(uploadallloop)
+            uploadallloop = nil
+        end
+    end
+end)
