@@ -23,7 +23,7 @@ local mainMenu = window:addMenu({
 })
 local sectionleft = mainMenu:addSection({
     text = 'Farm',
-    side = 'right',
+    side = 'left',
     showMinButton = true 
 })
 local buyLoop
@@ -38,7 +38,7 @@ sectionleft:addToggle({
 
             while true do
                 pcall(function()
-                    Event:FireServer("Hot Sauce", -9e9)
+                    Event:FireServer("Hot Sauce", 923864e46248)
                 end)
                 task.wait(0.3)
             end
