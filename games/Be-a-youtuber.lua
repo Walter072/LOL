@@ -26,28 +26,27 @@ local sectionleft = mainMenu:addSection({
     side = 'right',
     showMinButton = true 
 })
-local infmoneyloop
+local buyLoop
 
 sectionleft:addToggle({
-    text = "Auto inf money",
+    text = "Buy Hot Sauce",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
-        infmoneyloop = task.spawn(function()
+        buyLoop = task.spawn(function()
             local Event = game:GetService("ReplicatedStorage").events.buyGear
 
             while true do
                 pcall(function()
-                  Event:FireServer("Hot Sauce", -9e9)
+                    Event:FireServer("Hot Sauce", -9e9)
                 end)
-
-                task.wait(0.2) -- 3. Velocidad del spam
+                task.wait(0.3)
             end
         end)
     else
-        if infmoneyloop then
-            task.cancel(infmoneyloop)
-            infmoneyloop = nil
+        if buyLoop then
+            task.cancel(buyLoop)
+            buyLoop = nil
         end
     end
 end)
