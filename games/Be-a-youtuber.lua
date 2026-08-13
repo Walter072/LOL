@@ -21,15 +21,15 @@ local window = ui.newWindow({
 local mainMenu = window:addMenu({
     text = 'Main'
 })
-local sectionleft = mainMenu:addSection({
+local section = mainMenu:addSection({
     text = 'Farm',
-    side = 'left',
+    side = 'auto',
     showMinButton = true 
 })
 local buyLoop
 
-sectionleft:addToggle({
-    text = "Buy Hot Sauce",
+section:addToggle({
+    text = "Infinite money",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
