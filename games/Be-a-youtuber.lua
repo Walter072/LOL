@@ -21,15 +21,17 @@ local window = ui.newWindow({
 local mainMenu = window:addMenu({
     text = 'Main'
 })
+
 local miscMenu = window:addMenu({
     text = 'Misc'
 })
-local miscsection = miscMenu:addSection({
+
+local section2 = miscMenu:addSection({
     text = 'Misc',
     side = 'left',
     showMinButton = true
 })
-local mainsection = mainMenu:addSection({
+local section1 = mainMenu:addSection({
     text = 'Farm',
     side = 'left',
     showMinButton = true 
@@ -43,7 +45,7 @@ local function getBuyGearRemote()
     return folder:FindFirstChild("buyGear") or folder:FindFirstChild("BuyGear")
 end
 
-miscsection:addToggle({
+section2:addToggle({
     text = "Infinite Money",
     state = false
 }):bindToEvent("onToggle", function(newState)
@@ -80,7 +82,7 @@ miscsection:addToggle({
 end)
 local rebirthloop
 
-mainsection:addToggle({
+section1:addToggle({
     text = "Auto rebirth",
     state = false
 }):bindToEvent("onToggle", function(newState)
