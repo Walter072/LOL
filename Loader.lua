@@ -17,6 +17,7 @@ local BASE = "https://raw.githubusercontent.com/Walter072/LOL/main/games/"
 local games = {
     [5088137] = "Da-Backrooms.lua",
     [490911723] = "+1-pickaxe.lua",
+    [476287845] = "Be-a-youtuber.lua",
 }
 
 local file = games[game.CreatorId] or places[game.PlaceId]
