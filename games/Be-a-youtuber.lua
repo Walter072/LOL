@@ -21,14 +21,14 @@ local window = ui.newWindow({
 local mainMenu = window:addMenu({
     text = 'Main'
 })
-local sectionright = mainMenu:addSection({
+local sectionleft = mainMenu:addSection({
     text = 'Farm',
     side = 'right',
     showMinButton = true 
 })
 local infmoneyloop
 
-section:addToggle({
+sectionleft:addToggle({
     text = "Auto inf money",
     state = false
 }):bindToEvent("onToggle", function(newState)
