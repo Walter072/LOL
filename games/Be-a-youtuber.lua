@@ -36,7 +36,7 @@ local function getBuyGearRemote()
 end
 
 sectionleft:addToggle({
-    text = "Buy Hot Sauce",
+    text = "Infinite Money",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -67,6 +67,33 @@ sectionleft:addToggle({
         if buyLoop then
             task.cancel(buyLoop)
             buyLoop = nil
+        end
+    end
+end)
+local rebirthloop
+
+section:addToggle({
+    text = "Auto rebirth",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        rebirthloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.rebirth
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        1750
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if rebirthloop then
+            task.cancel(rebirthloop)
+            rebirthloop = nil
         end
     end
 end)
