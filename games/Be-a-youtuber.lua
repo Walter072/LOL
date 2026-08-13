@@ -72,7 +72,7 @@ sectionleft:addToggle({
 end)
 local rebirthloop
 
-section:addToggle({
+sectionleft:addToggle({
     text = "Auto rebirth",
     state = false
 }):bindToEvent("onToggle", function(newState)
