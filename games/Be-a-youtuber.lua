@@ -493,3 +493,6 @@ section4:addslider({
     end
 end)
 -- all credits go to topitbopit for the ui library.
+-- this code is free to use and modify.
+-- i dont know if i will made public Da-Backrooms full code because Da backrooms is officialy dead game
+-- use free this code for now
