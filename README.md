@@ -3,4 +3,5 @@ supported games
 > Da Backrooms [Fully scripted]
 > Be a youtuber [Not Fully scripted]
 > +1 Pickaxe Swing Escape [Medium scripted]
-> 
+> Crash or land [Not fully scripted not medium scripted]
+>
