@@ -18,6 +18,7 @@ local games = {
     [5088137] = "Da-Backrooms.lua",
     [490911723] = "+1-pickaxe.lua",
     [476287845] = "Be-a-youtuber.lua",
+    [1917531509] = "Crash-or-land.lua"
 }
 
 local file = games[game.CreatorId] or places[game.PlaceId]
