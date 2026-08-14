@@ -192,7 +192,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy frosty spray",
+    text = "Auto buy Frosty spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
