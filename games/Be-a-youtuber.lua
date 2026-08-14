@@ -165,7 +165,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy remove spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -192,7 +192,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy frosty spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -219,7 +219,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy aurora spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -246,7 +246,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy starfall spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -273,7 +273,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy candy spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -300,7 +300,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy rage spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -327,7 +327,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy glitched spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -354,7 +354,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy zen spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -381,7 +381,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy burnt spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -408,7 +408,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy alien spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
@@ -435,7 +435,7 @@ end)
 local sprayloop
 
 section3:addToggle({
-    text = "Auto buy remover spray",
+    text = "Auto buy consumed spray",
     state = false
 }):bindToEvent("onToggle", function(newState)
     if newState then
