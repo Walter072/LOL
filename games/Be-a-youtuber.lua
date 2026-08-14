@@ -1,3 +1,4 @@
+-- why are you here broski?
 local uiLoader = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/dollarware/main/library.lua'))
 local ui = uiLoader({
     rounding = false,
@@ -491,3 +492,4 @@ section4:addslider({
         player.Character.Humanoid.JumpPower = newValue
     end
 end)
+-- all credits go to topitbopit for the ui library.
