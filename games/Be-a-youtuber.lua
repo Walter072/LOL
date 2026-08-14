@@ -36,6 +36,11 @@ local section1 = mainMenu:addSection({
     side = 'left',
     showMinButton = true 
 })
+local section3 = mainMenu:addSection({
+    text = 'Auto buy',
+    side = 'right',
+    showMinButton = true
+})
 local buyLoop
 
 local function getBuyGearRemote()
@@ -93,7 +98,7 @@ section1:addToggle({
             while true do
                 pcall(function()
                     Event:FireServer(
-                        1750
+                        10000
                     )
                 end)
 
@@ -154,6 +159,303 @@ section1:addToggle({
         if uploadallloop then
             task.cancel(uploadallloop)
             uploadallloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Remove"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Frosty"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Aurora"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Starfall"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Candy"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Rage"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Glitched"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Zen"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Burnt"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Alien"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
+        end
+    end
+end)
+local sprayloop
+
+section3:addToggle({
+    text = "Auto buy remover spray",
+    state = false
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+        sprayloop = task.spawn(function()
+            local Event = game:GetService("ReplicatedStorage").events.buyMutationSpray
+
+            while true do
+                pcall(function()
+                    Event:FireServer(
+                        "Consumed"
+                    )
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    else
+        if sprayloop then
+            task.cancel(sprayloop)
+            sprayloop = nil
         end
     end
 end)
