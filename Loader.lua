@@ -6,20 +6,20 @@ if identifyexecutor then
     local execName = tostring(identifyexecutor()):lower()
     if execName:find("solara") or execName:find("xeno") then
         game:GetService("Players").LocalPlayer:Kick(
-            "EXECUTOR NOT SUPPORTED\n[PLEASE DON'T GET MAD THIS IS SOLARA/XENO'S FAULT]"
+            "EXECUTOR NOT SUPPORTED\n[PLEASE DON'T GET MAD THIS IS SOLARA/XENO'S FAULT]" -- here for the executors support xeno/solara is trash but if you want to use u need to add that
         )
         return
     end
 end
 
-local BASE = "https://raw.githubusercontent.com/Walter072/LOL/main/games/"
+local BASE = "https://raw.githubusercontent.com/Walter072/LOL/main/games/" -- here your github repo link, make sure to add the / at the end of the link
 
 local games = {
     [5088137] = "Da-Backrooms.lua",
     [490911723] = "+1-pickaxe.lua",
     [476287845] = "Be-a-youtuber.lua",
-    [1917531509] = "Crash-or-land.lua"
-}
+    [1917531509] = "Crash-or-land.lua", -- here add the name of the file you want to load,and in the numbers put the game creator id.
+}                                        -- use this code for you own loader, just add the game creator id and the file name to the table
 
 local file = games[game.CreatorId] or places[game.PlaceId]
 
