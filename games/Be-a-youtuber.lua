@@ -25,9 +25,17 @@ local mainMenu = window:addMenu({
 local miscMenu = window:addMenu({
     text = 'Misc'
 })
+local playerMenu = window:addMenu({
+    text = 'Player'
+})
 
 local section2 = miscMenu:addSection({
     text = 'Misc',
+    side = 'left',
+    showMinButton = true
+})
+local section4 = playerMenu:addSection({
+    text = 'Player',
     side = 'left',
     showMinButton = true
 })
@@ -457,5 +465,29 @@ section3:addToggle({
             task.cancel(sprayloop)
             sprayloop = nil
         end
+    end
+end)
+section4:addSlider({
+    text = 'WalkSpeed',
+    min = 16,
+    max = 120,
+    step = 1,
+    val = 16    
+}, function(newValue)
+    local player = game.Players.LocalPlayer
+    if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.WalkSpeed = newValue
+    end
+end)
+section4:addslider({
+    text = 'JumpPower',
+    min = 50,
+    max = 200,
+    step = 1,
+    val = 50
+}, function(newValue)
+    local player = game.Players.LocalPlayer
+    if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.JumpPower = newValue
     end
 end)
