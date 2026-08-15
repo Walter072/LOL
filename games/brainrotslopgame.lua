@@ -19,8 +19,14 @@ local window = ui.newWindow({
     )
 })
 
-local menu = window:addMenu({ text = 'Farm' })
-local section = menu:addSection({ text = 'Lucky Block', side = 'auto' })
+local dupeMenu = window:addMenu({
+     text = 'dupe' 
+})
+
+local section = dupeMenu:addSection({
+     text = 'Dupe Brainrot',
+     side = 'left' 
+})
 
 local Players = game:GetService('Players')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
