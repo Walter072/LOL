@@ -135,7 +135,7 @@ section:addTextbox({ text = 'BlockName (optional)' })
         end
     end)
 
-section:addTextbox({ text = 'Rarity zone'})
+section:addTextbox({ text = 'Rarity zone' })
     :bindToEvent('onFocusLost', function(text)
         if text and text ~= '' then
             config.Rarityzone = text
