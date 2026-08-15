@@ -480,6 +480,7 @@ section4:addSlider({
         player.Character.Humanoid.WalkSpeed = newValue
     end
 end)
+
 section4:addSlider({
     text = 'JumpPower',
     min = 50,
@@ -492,6 +493,3 @@ section4:addSlider({
         player.Character.Humanoid.JumpPower = newValue
     end
 end)
--- all credits go to topitbopit for the ui library.
--- this code is free to use and modify.
--- use free this code for now
