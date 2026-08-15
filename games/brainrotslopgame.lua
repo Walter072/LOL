@@ -177,7 +177,7 @@ end)
 
 local rebirhLoop
 
-section:addToggle({
+section2:addToggle({
     text = "Auto Rebirth",
     state = false
 }):bindToEvent("onToggle", function(newState)
