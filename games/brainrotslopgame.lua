@@ -174,20 +174,29 @@ section:addButton({
         })
     end)
 end)
-local rebirthloop
 
-section:addtoggle({
-    text = 'Auto rebirth',
+local rebirhLoop
+
+section:addToggle({
+    text = "Auto Rebirth",
     state = false
-}):bindToEvent('onToggle', function(state)
-    if state then
-        rebirthloop = task.spawn(function()
-            local Event = game:Getservice("ReplicatedStorage").Events.RequestRebirth
+}):bindToEvent("onToggle", function(newState)
+    if newState then
+
+        rebirthLoop = task.spawn(function()
+            while true do
+                pcall(function()
+                 local Event = game:GetService("ReplicatedStorage").Events.RequestRebirth
+                 Event:FireServer()
+                end)
+
+                task.wait(0.2)
+            end
+        end)
     else
-        Event:FireServer()
-        if rebirthloop then
-            task.cancel(rebirthloop)
-            rebirthloop = nil
+        if rebirthLoop then
+            task.cancel(rebirthLoop)
+            rebirthLoop = nil
         end
     end
 end)
