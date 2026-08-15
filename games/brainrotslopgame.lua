@@ -91,7 +91,7 @@ local function doThrow()
             ItemName = config.ItemName,
             Rarity = config.Rarity,
             BlockName = config.BlockName,
-            LandingRarity = config.Rarity,
+            LandingRarity = config.Rarityzone,
             Mutation = config.Mutation,
             Power = config.Power
         })
@@ -132,6 +132,12 @@ section:addTextbox({ text = 'BlockName (optional)' })
     :bindToEvent('onFocusLost', function(text)
         if text and text ~= '' then
             config.BlockName = text
+        end
+    end)
+section:addTextbox({ text = 'Rarity zone'})
+    :bindToEvent(""onFocusLost", function(text)
+        if text and text ~= "" then
+            config.Rarityzone = text
         end
     end)
 
