@@ -490,6 +490,7 @@ section4:addSlider({
 }, function(newValue)
     local player = game.Players.LocalPlayer
     if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.UseJumpPower = true
         player.Character.Humanoid.JumpPower = newValue
     end
 end)
