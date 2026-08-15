@@ -159,9 +159,3 @@ section:addButton({
         })
     end)
 end)
-
-ui.notify({
-    title = 'brainrot slop game',
-    message = 'ready for dupe,
-    duration = 4
-})
