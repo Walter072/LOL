@@ -45,7 +45,7 @@ local config = {
     ItemName = 'Meowl',
     Rarity = 'OG',
     Mutation = 'Disco',
-    LandingRarity = "OG",
+    LandingRarity = 'Cosmic',
     BlockName = 'Uncommon Lucky Block',
     Power = 10.642112568062,
     LandingPosition = Vector3.new(4, -99, 4514)
@@ -87,15 +87,15 @@ local function doThrow()
     task.wait()
 
     pcall(function()
-        Remotes.LuckyBlockLanded:FireServer({
-            LandingPosition = config.LandingPosition,
-            ItemName = config.ItemName,
-            Rarity = config.Rarity,
-            BlockName = config.BlockName,
-            LandingRarity = config.Rarityzone,
-            Mutation = config.Mutation,
-            Power = config.Power
-        })
+    Remotes.LuckyBlockLanded:FireServer({
+    LandingPosition = config.LandingPosition,
+    ItemName = config.ItemName,
+    Rarity = config.Rarity,
+    BlockName = config.BlockName,
+    LandingRarity = config.LandingRarity,
+    Mutation = config.Mutation,
+    Power = config.Power
+      })
     end)
 
     task.wait(0.5)
@@ -136,10 +136,10 @@ section:addTextbox({ text = 'BlockName (optional)' })
         end
     end)
 
-section:addTextbox({ text = 'Rarity zone' })
+section:addTextbox({ text = 'LandingRarity (optional)' })
     :bindToEvent('onFocusLost', function(text)
         if text and text ~= '' then
-            config.Rarityzone = text
+            config.LandingRarity = text
         end
     end)
 
