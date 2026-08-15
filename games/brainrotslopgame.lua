@@ -23,6 +23,15 @@ local dupeMenu = window:addMenu({
      text = 'dupe' 
 })
 
+local farmMenu = window:addMenu({
+     text = 'farm' 
+})
+
+local section2 = farmMenu:addSection({
+     text = 'IDK',
+     side = 'left' 
+})
+
 local section = dupeMenu:addSection({
      text = 'Dupe Brainrot',
      side = 'left' 
@@ -164,4 +173,21 @@ section:addButton({
             duration = 3
         })
     end)
+end)
+local rebirthloop
+
+section:addtoggle({
+    text = 'Auto rebirth',
+    state = false
+}):bindToEvent('onToggle', function(state)
+    if state then
+        rebirthloop = task.spawn(function()
+            local Event = game:Getservice("ReplicatedStorage").Events.RequestRebirth
+    else
+        Event:FireServer()
+        if rebirthloop then
+            task.cancel(rebirthloop)
+            rebirthloop = nil
+        end
+    end
 end)
