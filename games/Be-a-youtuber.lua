@@ -480,7 +480,7 @@ section4:addSlider({
         player.Character.Humanoid.WalkSpeed = newValue
     end
 end)
-section4:addslider({
+section4:addSlider({
     text = 'JumpPower',
     min = 50,
     max = 200,
@@ -494,5 +494,4 @@ section4:addslider({
 end)
 -- all credits go to topitbopit for the ui library.
 -- this code is free to use and modify.
--- i dont know if i will made public Da-Backrooms full code because Da backrooms is officialy dead game
 -- use free this code for now
