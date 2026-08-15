@@ -19,7 +19,6 @@ local games = {
     [490911723] = "+1-pickaxe.lua",
     [476287845] = "Be-a-youtuber.lua",
     [1917531509] = "Crash-or-land.lua", -- here add the name of the file you want to load,and in the numbers put the game creator id.
-    [117276665] = "brainrotslopgame.lua",
 }                                        -- use this code for you own loader, just add the game creator id and the file name to the table
 
 local file = games[game.CreatorId] or places[game.PlaceId]
