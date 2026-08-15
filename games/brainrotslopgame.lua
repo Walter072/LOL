@@ -45,6 +45,7 @@ local config = {
     ItemName = 'Meowl',
     Rarity = 'OG',
     Mutation = 'Disco',
+    LandingRarity = "OG",
     BlockName = 'Uncommon Lucky Block',
     Power = 10.642112568062,
     LandingPosition = Vector3.new(4, -99, 4514)
