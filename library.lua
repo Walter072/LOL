@@ -1,6 +1,8 @@
 --[[
-  LOL Hub UI — Glass / Symmetric
-  Inspired by modern glass UI · practical script hub layout
+  LOL Hub UI — Glass / Symmetric (Mejorado)
+  - Sin hueco negro central
+  - Minimizador integrado
+  - Botón de cierre estético y compacto
 ]]
 
 local Players = game:GetService("Players")
@@ -9,7 +11,7 @@ local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
-local LOL = { Version = "2.2-glass" }
+local LOL = { Version = "2.3-glass" }
 LOL.__index = LOL
 
 -- Glass blue (concept) + LOL accent
@@ -134,6 +136,7 @@ function LOL:CreateWindow(opts)
     opts = opts or {}
     local bgAlpha = opts.Transparency or 0.15
     local W, H = opts.Width or 580, opts.Height or 400
+    local MIN_HEIGHT = 48 -- Altura de la barra superior
 
     local old = PlayerGui:FindFirstChild("LOLHubLib")
     if old then old:Destroy() end
@@ -184,18 +187,20 @@ function LOL:CreateWindow(opts)
 
     -- Main window (symmetric)
     local win = Instance.new("Frame")
-    win.Size = UDim2.fromOffset(W, 0)
+    win.Size = UDim2.fromOffset(W, H)
     win.Position = UDim2.fromScale(0.5, 0.5)
     win.AnchorPoint = Vector2.new(0.5, 0.5)
     win.BackgroundColor3 = T.bg
-    win.BackgroundTransparency = 1
+    win.BackgroundTransparency = bgAlpha
     win.ClipsDescendants = true
     win.Visible = false
     win.Parent = gui
     corner(win, 18)
-    local winStroke = stroke(win, T.accent, 1.5, 1)
+    local winStroke = stroke(win, T.accent, 1.5, 0.35)
 
     local hubOpen, animating = false, false
+    local isMinimized = false
+
     local function setOpen(open)
         if animating then return end
         animating = true
@@ -225,29 +230,48 @@ function LOL:CreateWindow(opts)
             end)
         end
     end
+
+    local function setMinimized(min)
+        if animating then return end
+        animating = true
+        isMinimized = min
+        if min then
+            tween(win, 0.3, { Size = UDim2.fromOffset(W, MIN_HEIGHT) })
+            tween(winStroke, 0.3, { Transparency = 0.5 })
+        else
+            tween(win, 0.3, { Size = UDim2.fromOffset(W, H) })
+            tween(winStroke, 0.3, { Transparency = 0.35 })
+        end
+        task.delay(0.32, function() animating = false end)
+    end
+
     fab.MouseButton1Click:Connect(function() setOpen(not hubOpen) end)
     getgenv().__LOL_ToggleHub = function() setOpen(not hubOpen) end
 
     -- Top bar (balanced: title left, actions right)
     local top = Instance.new("Frame")
-    top.Size = UDim2.new(1, 0, 0, 48)
+    top.Size = UDim2.new(1, 0, 0, MIN_HEIGHT)
     top.BackgroundColor3 = T.top
     top.BackgroundTransparency = 0.25
     top.Parent = win
     corner(top, 18)
-    local topFill = Instance.new("Frame")
-    topFill.Size = UDim2.new(1, 0, 0, 20)
-    topFill.Position = UDim2.new(0, 0, 1, -20)
-    topFill.BackgroundColor3 = T.top
-    topFill.BackgroundTransparency = 0.25
-    topFill.BorderSizePixel = 0
-    topFill.Parent = top
+    
+    -- Fondo sólido para la barra superior (elimina el hueco negro)
+    local topBg = Instance.new("Frame")
+    topBg.Size = UDim2.new(1, 0, 1, 0)
+    topBg.BackgroundColor3 = T.top
+    topBg.BackgroundTransparency = 0.25
+    topBg.BorderSizePixel = 0
+    topBg.ZIndex = 0
+    topBg.Parent = top
+    corner(topBg, 18)
 
     -- Logo circle (left, like concept)
     local logo = Instance.new("Frame")
     logo.Size = UDim2.fromOffset(32, 32)
     logo.Position = UDim2.fromOffset(12, 8)
     logo.BackgroundColor3 = T.elev
+    logo.ZIndex = 2
     logo.Parent = top
     corner(logo, 16)
     stroke(logo, T.accent2, 1.2, 0.3)
@@ -258,6 +282,7 @@ function LOL:CreateWindow(opts)
     logoT.TextSize = 10
     logoT.TextColor3 = T.accent2
     logoT.Text = "LOL"
+    logoT.ZIndex = 3
     logoT.Parent = logo
 
     local title = Instance.new("TextLabel")
@@ -269,21 +294,48 @@ function LOL:CreateWindow(opts)
     title.TextColor3 = T.text
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Text = opts.Name or "LOL Hub"
+    title.ZIndex = 2
     title.Parent = top
+
+    -- Botón Minimizar
+    local minBtn = Instance.new("TextButton")
+    minBtn.Size = UDim2.fromOffset(28, 28)
+    minBtn.Position = UDim2.new(1, -72, 0.5, -14)
+    minBtn.BackgroundColor3 = T.elev
+    minBtn.BackgroundTransparency = 0.1
+    minBtn.Font = Enum.Font.GothamBold
+    minBtn.TextSize = 16
+    minBtn.TextColor3 = T.accent2
+    minBtn.Text = "—"
+    minBtn.AutoButtonColor = false
+    minBtn.ZIndex = 2
+    minBtn.Parent = top
+    corner(minBtn, 14)
+    stroke(minBtn, T.stroke, 1, 0.5)
+    minBtn.MouseEnter:Connect(function()
+        tween(minBtn, 0.15, { BackgroundColor3 = T.accent, TextColor3 = Color3.new(1, 1, 1) })
+    end)
+    minBtn.MouseLeave:Connect(function()
+        tween(minBtn, 0.15, { BackgroundColor3 = T.elev, TextColor3 = T.accent2 })
+    end)
+    minBtn.MouseButton1Click:Connect(function()
+        setMinimized(not isMinimized)
+    end)
 
     -- Close button — clean circle X (right, symmetric with logo)
     local close = Instance.new("TextButton")
-    close.Size = UDim2.fromOffset(32, 32)
-    close.Position = UDim2.new(1, -44, 0.5, -16)
+    close.Size = UDim2.fromOffset(28, 28)
+    close.Position = UDim2.new(1, -36, 0.5, -14)
     close.BackgroundColor3 = T.elev
     close.BackgroundTransparency = 0.1
     close.Font = Enum.Font.GothamBold
-    close.TextSize = 14
+    close.TextSize = 13
     close.TextColor3 = T.dim
     close.Text = "✕"
     close.AutoButtonColor = false
+    close.ZIndex = 2
     close.Parent = top
-    corner(close, 16)
+    corner(close, 14)
     stroke(close, T.stroke, 1, 0.5)
     close.MouseEnter:Connect(function()
         tween(close, 0.15, { BackgroundColor3 = T.danger, TextColor3 = Color3.new(1, 1, 1) })
@@ -316,10 +368,11 @@ function LOL:CreateWindow(opts)
     -- Sidebar (aligned width, even padding)
     local SIDE_W = 120
     local side = Instance.new("Frame")
-    side.Size = UDim2.new(0, SIDE_W, 1, -64)
-    side.Position = UDim2.fromOffset(12, 56)
+    side.Size = UDim2.new(0, SIDE_W, 1, -(MIN_HEIGHT + 8))
+    side.Position = UDim2.fromOffset(12, MIN_HEIGHT + 8)
     side.BackgroundColor3 = T.side
     side.BackgroundTransparency = 0.25
+    side.ZIndex = 1
     side.Parent = win
     corner(side, 14)
     stroke(side, T.stroke, 1, 0.55)
@@ -338,14 +391,15 @@ function LOL:CreateWindow(opts)
     sideLay.Parent = sideScroll
 
     local content = Instance.new("ScrollingFrame")
-    content.Size = UDim2.new(1, -(SIDE_W + 28), 1, -68)
-    content.Position = UDim2.fromOffset(SIDE_W + 20, 56)
+    content.Size = UDim2.new(1, -(SIDE_W + 28), 1, -(MIN_HEIGHT + 8))
+    content.Position = UDim2.fromOffset(SIDE_W + 20, MIN_HEIGHT + 8)
     content.BackgroundTransparency = 1
     content.BorderSizePixel = 0
     content.ScrollBarThickness = 3
     content.ScrollBarImageColor3 = T.accent2
     content.AutomaticCanvasSize = Enum.AutomaticSize.Y
     content.CanvasSize = UDim2.new()
+    content.ZIndex = 1
     content.Parent = win
     local contentLay = Instance.new("UIListLayout")
     contentLay.Padding = UDim.new(0, 12)
@@ -625,7 +679,7 @@ function LOL:CreateWindow(opts)
     task.spawn(function()
         task.wait(0.12)
         setOpen(true)
-        self:Notify({ Title = "LOL Hub", Content = "Glass UI · drag LOL · ✕ closes", Duration = 3 })
+        self:Notify({ Title = "LOL Hub", Content = "Glass UI · minimizador · ✕ cierra", Duration = 3 })
     end)
 
     return Window
