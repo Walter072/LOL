@@ -231,6 +231,72 @@ function LOL:CreateWindow(opts)
     -- Top bar (balanced: title left, actions right)
    -- ===== Title bar (sin franja negra) =====
 local TOP_H = 44
+  local hubOpen, minimized, animating = false, false, false
+local FULL = UDim2.fromOffset(W, H)
+local MINI = UDim2.fromOffset(W, TOP_H) -- solo la barra
+
+local function setOpen(open)
+    if animating then return end
+    animating = true
+    hubOpen = open
+    minimized = false
+    if open then
+        win.Visible = true
+        side.Visible = true
+        content.Visible = true
+        tween(win, 0.35, { Size = FULL, BackgroundTransparency = bgAlpha })
+        tween(winStroke, 0.35, { Transparency = 0.35 })
+        fab.Text = "—"
+        task.delay(0.36, function() animating = false end)
+    else
+        tween(win, 0.28, { Size = UDim2.fromOffset(W, 0), BackgroundTransparency = 1 })
+        tween(winStroke, 0.28, { Transparency = 1 })
+        fab.Text = "LOL"
+        task.delay(0.3, function()
+            win.Visible = false
+            animating = false
+        end)
+    end
+end
+
+local function setMinimized(on)
+    if not hubOpen or animating then return end
+    animating = true
+    minimized = on
+    if on then
+        side.Visible = false
+        content.Visible = false
+        tween(win, 0.28, { Size = MINI })
+        minBtn.Text = "□" -- restaurar
+    else
+        side.Visible = true
+        content.Visible = true
+        tween(win, 0.32, { Size = FULL })
+        minBtn.Text = "─"
+    end
+    task.delay(0.32, function() animating = false end)
+end
+
+fab.MouseButton1Click:Connect(function()
+    if minimized then
+        setMinimized(false)
+    else
+        setOpen(not hubOpen)
+    end
+end)
+
+closeBtn.MouseButton1Click:Connect(function()
+    setOpen(false)
+end)
+
+minBtn.MouseButton1Click:Connect(function()
+    setMinimized(not minimized)
+end)
+  side.Position = UDim2.fromOffset(12, TOP_H + 8)
+side.Size = UDim2.new(0, 120, 1, -(TOP_H + 16))
+
+content.Position = UDim2.fromOffset(140, TOP_H + 8)
+content.Size = UDim2.new(1, -152, 1, -(TOP_H + 16))
 
 local top = Instance.new("Frame")
 top.Name = "TopBar"
