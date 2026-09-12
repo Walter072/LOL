@@ -1,6 +1,6 @@
 --[[
-  LOL Hub UI — Fusion polished
-  Transparent bg · Open/Close fab · Animated show/hide · Settings-ready
+  LOL Hub UI — Glass / Symmetric
+  Inspired by modern glass UI · practical script hub layout
 ]]
 
 local Players = game:GetService("Players")
@@ -9,79 +9,43 @@ local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
-local LOL = { Version = "2.1" }
+local LOL = { Version = "2.2-glass" }
 LOL.__index = LOL
 
-local Themes = {
-    lol = {
-        bg = Color3.fromRGB(16, 18, 24),
-        top = Color3.fromRGB(22, 24, 32),
-        side = Color3.fromRGB(12, 13, 18),
-        card = Color3.fromRGB(26, 28, 36),
-        elev = Color3.fromRGB(34, 36, 46),
-        stroke = Color3.fromRGB(60, 64, 78),
-        accent = Color3.fromRGB(150, 30, 40),
-        accent2 = Color3.fromRGB(230, 185, 55),
-        text = Color3.fromRGB(245, 245, 250),
-        dim = Color3.fromRGB(140, 145, 160),
-        toggleOn = Color3.fromRGB(230, 185, 55),
-        toggleOff = Color3.fromRGB(48, 50, 60),
-        slider = Color3.fromRGB(150, 30, 40),
-        tabOn = Color3.fromRGB(150, 30, 40),
-        fab = Color3.fromRGB(150, 30, 40),
-    },
-    dollar = {
-        bg = Color3.fromRGB(8, 8, 8),
-        top = Color3.fromRGB(14, 14, 14),
-        side = Color3.fromRGB(10, 10, 10),
-        card = Color3.fromRGB(16, 16, 16),
-        elev = Color3.fromRGB(22, 22, 22),
-        stroke = Color3.fromRGB(40, 40, 40),
-        accent = Color3.fromRGB(249, 22, 52),
-        accent2 = Color3.fromRGB(255, 90, 140),
-        text = Color3.fromRGB(255, 255, 255),
-        dim = Color3.fromRGB(160, 160, 160),
-        toggleOn = Color3.fromRGB(249, 22, 52),
-        toggleOff = Color3.fromRGB(45, 45, 45),
-        slider = Color3.fromRGB(249, 22, 52),
-        tabOn = Color3.fromRGB(249, 22, 52),
-        fab = Color3.fromRGB(249, 22, 52),
-    },
-    rayfield = {
-        bg = Color3.fromRGB(22, 22, 26),
-        top = Color3.fromRGB(30, 30, 36),
-        side = Color3.fromRGB(26, 26, 30),
-        card = Color3.fromRGB(32, 32, 38),
-        elev = Color3.fromRGB(40, 40, 48),
-        stroke = Color3.fromRGB(55, 55, 65),
-        accent = Color3.fromRGB(50, 140, 220),
-        accent2 = Color3.fromRGB(90, 180, 255),
-        text = Color3.fromRGB(240, 240, 245),
-        dim = Color3.fromRGB(150, 150, 160),
-        toggleOn = Color3.fromRGB(0, 150, 220),
-        toggleOff = Color3.fromRGB(70, 70, 80),
-        slider = Color3.fromRGB(50, 140, 220),
-        tabOn = Color3.fromRGB(50, 140, 220),
-        fab = Color3.fromRGB(50, 140, 220),
-    },
+-- Glass blue (concept) + LOL accent
+local T = {
+    bg = Color3.fromRGB(12, 16, 28),
+    top = Color3.fromRGB(18, 24, 40),
+    side = Color3.fromRGB(14, 20, 34),
+    card = Color3.fromRGB(22, 30, 48),
+    elev = Color3.fromRGB(28, 38, 58),
+    stroke = Color3.fromRGB(60, 120, 200),
+    accent = Color3.fromRGB(40, 140, 255),
+    accent2 = Color3.fromRGB(100, 200, 255),
+    gold = Color3.fromRGB(230, 185, 55),
+    text = Color3.fromRGB(235, 245, 255),
+    dim = Color3.fromRGB(140, 160, 190),
+    toggleOn = Color3.fromRGB(40, 160, 255),
+    toggleOff = Color3.fromRGB(40, 50, 70),
+    danger = Color3.fromRGB(220, 70, 90),
+    fab = Color3.fromRGB(30, 100, 220),
 }
 
-local function tween(obj, t, props, style)
-    local info = TweenInfo.new(t or 0.25, style or Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
-    local tw = TweenService:Create(obj, info, props)
+local function tween(o, t, p, style)
+    local tw = TweenService:Create(o, TweenInfo.new(t or 0.25, style or Enum.EasingStyle.Quint, Enum.EasingDirection.Out), p)
     tw:Play()
     return tw
 end
 local function corner(p, r)
     local c = Instance.new("UICorner")
-    c.CornerRadius = UDim.new(0, r or 10)
+    c.CornerRadius = UDim.new(0, r or 12)
     c.Parent = p
 end
 local function stroke(p, col, th, tr)
     local s = Instance.new("UIStroke")
-    s.Color = col
+    s.Color = col or T.stroke
     s.Thickness = th or 1
-    s.Transparency = tr or 0
+    s.Transparency = tr or 0.4
     s.Parent = p
     return s
 end
@@ -96,16 +60,11 @@ end
 
 function LOL:Notify(opts)
     opts = opts or {}
-    local T = self._T
-    if not T or not self._gui then return end
-    local title = opts.Title or "LOL Hub"
-    local content = opts.Content or ""
-    local dur = opts.Duration or 3
-
+    if not self._gui then return end
     if not self._notifHost then
         local host = Instance.new("Frame")
-        host.Size = UDim2.fromOffset(290, 500)
-        host.Position = UDim2.new(1, -14, 1, -14)
+        host.Size = UDim2.fromOffset(300, 480)
+        host.Position = UDim2.new(1, -16, 1, -16)
         host.AnchorPoint = Vector2.new(1, 1)
         host.BackgroundTransparency = 1
         host.Parent = self._gui
@@ -115,27 +74,24 @@ function LOL:Notify(opts)
         lay.Parent = host
         self._notifHost = host
     end
-
     local f = Instance.new("Frame")
     f.Size = UDim2.fromOffset(280, 0)
     f.AutomaticSize = Enum.AutomaticSize.Y
     f.BackgroundColor3 = T.top
     f.BackgroundTransparency = 1
     f.Parent = self._notifHost
-    corner(f, 12)
+    corner(f, 14)
     local st = stroke(f, T.accent, 1.2, 1)
-
-    local accentBar = Instance.new("Frame")
-    accentBar.Size = UDim2.new(0, 3, 1, -16)
-    accentBar.Position = UDim2.fromOffset(10, 8)
-    accentBar.BackgroundColor3 = T.accent2
-    accentBar.BackgroundTransparency = 1
-    accentBar.BorderSizePixel = 0
-    accentBar.Parent = f
-    corner(accentBar, 2)
-
+    local bar = Instance.new("Frame")
+    bar.Size = UDim2.new(0, 3, 1, -16)
+    bar.Position = UDim2.fromOffset(10, 8)
+    bar.BackgroundColor3 = T.accent2
+    bar.BackgroundTransparency = 1
+    bar.BorderSizePixel = 0
+    bar.Parent = f
+    corner(bar, 2)
     local ttl = Instance.new("TextLabel")
-    ttl.Size = UDim2.new(1, -30, 0, 18)
+    ttl.Size = UDim2.new(1, -28, 0, 18)
     ttl.Position = UDim2.fromOffset(20, 12)
     ttl.BackgroundTransparency = 1
     ttl.Font = Enum.Font.GothamBold
@@ -143,11 +99,10 @@ function LOL:Notify(opts)
     ttl.TextColor3 = T.accent2
     ttl.TextTransparency = 1
     ttl.TextXAlignment = Enum.TextXAlignment.Left
-    ttl.Text = title
+    ttl.Text = opts.Title or "LOL Hub"
     ttl.Parent = f
-
     local body = Instance.new("TextLabel")
-    body.Size = UDim2.new(1, -30, 0, 0)
+    body.Size = UDim2.new(1, -28, 0, 0)
     body.AutomaticSize = Enum.AutomaticSize.Y
     body.Position = UDim2.fromOffset(20, 32)
     body.BackgroundTransparency = 1
@@ -157,34 +112,28 @@ function LOL:Notify(opts)
     body.TextTransparency = 1
     body.TextXAlignment = Enum.TextXAlignment.Left
     body.TextWrapped = true
-    body.Text = content
+    body.Text = opts.Content or ""
     body.Parent = f
     pad(f, 0, 14, 0, 0)
-
-    tween(f, 0.4, { BackgroundTransparency = 0.12 })
-    tween(st, 0.4, { Transparency = 0.25 })
-    tween(accentBar, 0.4, { BackgroundTransparency = 0 })
-    tween(ttl, 0.4, { TextTransparency = 0 })
-    tween(body, 0.4, { TextTransparency = 0 })
-
-    task.delay(dur, function()
+    tween(f, 0.35, { BackgroundTransparency = 0.12 })
+    tween(st, 0.35, { Transparency = 0.3 })
+    tween(bar, 0.35, { BackgroundTransparency = 0 })
+    tween(ttl, 0.35, { TextTransparency = 0 })
+    tween(body, 0.35, { TextTransparency = 0 })
+    task.delay(opts.Duration or 3, function()
         if not f.Parent then return end
-        tween(f, 0.28, { BackgroundTransparency = 1 })
-        tween(st, 0.28, { Transparency = 1 })
-        tween(ttl, 0.28, { TextTransparency = 1 })
-        tween(body, 0.28, { TextTransparency = 1 })
-        task.wait(0.3)
+        tween(f, 0.25, { BackgroundTransparency = 1 })
+        tween(ttl, 0.25, { TextTransparency = 1 })
+        tween(body, 0.25, { TextTransparency = 1 })
+        task.wait(0.28)
         f:Destroy()
     end)
 end
 
 function LOL:CreateWindow(opts)
     opts = opts or {}
-    local themeName = opts.Theme or "lol"
-    local T = Themes[themeName] or Themes.lol
-    self._T = T
-
-    local bgAlpha = opts.Transparency or 0.18 -- higher = more transparent window fill
+    local bgAlpha = opts.Transparency or 0.15
+    local W, H = opts.Width or 580, opts.Height or 400
 
     local old = PlayerGui:FindFirstChild("LOLHubLib")
     if old then old:Destroy() end
@@ -193,34 +142,29 @@ function LOL:CreateWindow(opts)
     gui.Name = "LOLHubLib"
     gui.ResetOnSpawn = false
     gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    gui.DisplayOrder = 130
+    gui.DisplayOrder = 140
     gui.Parent = PlayerGui
     self._gui = gui
 
-    local W, H = opts.Width or 560, opts.Height or 390
-
-    -- ===== Floating open/close button (typical LOL) =====
+    -- FAB open/close
     local fab = Instance.new("TextButton")
-    fab.Name = "OpenBtn"
-    fab.Size = UDim2.fromOffset(52, 52)
-    fab.Position = UDim2.new(0, 18, 1, -70)
+    fab.Size = UDim2.fromOffset(54, 54)
+    fab.Position = UDim2.new(0, 20, 1, -76)
     fab.BackgroundColor3 = T.fab
-    fab.BackgroundTransparency = 0.1
+    fab.BackgroundTransparency = 0.08
     fab.Font = Enum.Font.GothamBlack
-    fab.TextSize = 13
-    fab.TextColor3 = Color3.new(1, 1, 1)
+    fab.TextSize = 12
+    fab.TextColor3 = T.text
     fab.Text = "LOL"
     fab.AutoButtonColor = false
     fab.Parent = gui
-    corner(fab, 16)
-    local fabStroke = stroke(fab, T.accent2, 1.5, 0.2)
+    corner(fab, 18)
+    stroke(fab, T.accent2, 1.5, 0.25)
 
-    -- drag fab
     do
         local dragging, start, startPos
         fab.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1
-                or input.UserInputType == Enum.UserInputType.Touch then
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                 dragging = true
                 start = input.Position
                 startPos = fab.Position
@@ -231,24 +175,15 @@ function LOL:CreateWindow(opts)
         end)
         UserInputService.InputChanged:Connect(function(input)
             if not dragging then return end
-            if input.UserInputType == Enum.UserInputType.MouseMovement
-                or input.UserInputType == Enum.UserInputType.Touch then
+            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
                 local d = input.Position - start
                 fab.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + d.X, startPos.Y.Scale, startPos.Y.Offset + d.Y)
             end
         end)
     end
 
-    fab.MouseEnter:Connect(function()
-        tween(fab, 0.2, { Size = UDim2.fromOffset(56, 56), BackgroundTransparency = 0 })
-    end)
-    fab.MouseLeave:Connect(function()
-        tween(fab, 0.2, { Size = UDim2.fromOffset(52, 52), BackgroundTransparency = 0.1 })
-    end)
-
-    -- ===== Window =====
+    -- Main window (symmetric)
     local win = Instance.new("Frame")
-    win.Name = "Window"
     win.Size = UDim2.fromOffset(W, 0)
     win.Position = UDim2.fromScale(0.5, 0.5)
     win.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -257,94 +192,108 @@ function LOL:CreateWindow(opts)
     win.ClipsDescendants = true
     win.Visible = false
     win.Parent = gui
-    corner(win, 14)
-    local winStroke = stroke(win, T.accent, 1.2, 1)
+    corner(win, 18)
+    local winStroke = stroke(win, T.accent, 1.5, 1)
 
-    local hubOpen = false
-    local animating = false
-
+    local hubOpen, animating = false, false
     local function setOpen(open)
         if animating then return end
         animating = true
         hubOpen = open
         if open then
             win.Visible = true
-            win.Size = UDim2.fromOffset(W, 0)
-            win.BackgroundTransparency = 1
-            winStroke.Transparency = 1
-            tween(win, 0.35, {
+            win.Size = UDim2.fromOffset(W * 0.92, 0)
+            tween(win, 0.38, {
                 Size = UDim2.fromOffset(W, H),
                 BackgroundTransparency = bgAlpha,
-            }, Enum.EasingStyle.Quint)
-            tween(winStroke, 0.35, { Transparency = 0.35 })
-            tween(fab, 0.25, { BackgroundColor3 = T.accent2 })
+            })
+            tween(winStroke, 0.38, { Transparency = 0.35 })
             fab.Text = "—"
-            task.delay(0.36, function() animating = false end)
+            tween(fab, 0.2, { BackgroundColor3 = T.accent2 })
+            task.delay(0.4, function() animating = false end)
         else
             tween(win, 0.28, {
-                Size = UDim2.fromOffset(W, 0),
+                Size = UDim2.fromOffset(W * 0.92, 0),
                 BackgroundTransparency = 1,
-            }, Enum.EasingStyle.Quint)
+            })
             tween(winStroke, 0.28, { Transparency = 1 })
-            tween(fab, 0.25, { BackgroundColor3 = T.fab })
             fab.Text = "LOL"
+            tween(fab, 0.2, { BackgroundColor3 = T.fab })
             task.delay(0.3, function()
                 win.Visible = false
                 animating = false
             end)
         end
     end
+    fab.MouseButton1Click:Connect(function() setOpen(not hubOpen) end)
+    getgenv().__LOL_ToggleHub = function() setOpen(not hubOpen) end
 
-    fab.MouseButton1Click:Connect(function()
-        setOpen(not hubOpen)
-    end)
-
-    getgenv().__LOL_ToggleHub = function()
-        setOpen(not hubOpen)
-    end
-
-    -- Title bar
+    -- Top bar (balanced: title left, actions right)
     local top = Instance.new("Frame")
-    top.Size = UDim2.new(1, 0, 0, 44)
+    top.Size = UDim2.new(1, 0, 0, 48)
     top.BackgroundColor3 = T.top
-    top.BackgroundTransparency = 0.15
+    top.BackgroundTransparency = 0.25
     top.Parent = win
-    corner(top, 14)
-    local topFix = Instance.new("Frame")
-    topFix.Size = UDim2.new(1, 0, 0, 16)
-    topFix.Position = UDim2.new(0, 0, 1, -16)
-    topFix.BackgroundColor3 = T.top
-    topFix.BackgroundTransparency = 0.15
-    topFix.BorderSizePixel = 0
-    topFix.Parent = top
+    corner(top, 18)
+    local topFill = Instance.new("Frame")
+    topFill.Size = UDim2.new(1, 0, 0, 20)
+    topFill.Position = UDim2.new(0, 0, 1, -20)
+    topFill.BackgroundColor3 = T.top
+    topFill.BackgroundTransparency = 0.25
+    topFill.BorderSizePixel = 0
+    topFill.Parent = top
+
+    -- Logo circle (left, like concept)
+    local logo = Instance.new("Frame")
+    logo.Size = UDim2.fromOffset(32, 32)
+    logo.Position = UDim2.fromOffset(12, 8)
+    logo.BackgroundColor3 = T.elev
+    logo.Parent = top
+    corner(logo, 16)
+    stroke(logo, T.accent2, 1.2, 0.3)
+    local logoT = Instance.new("TextLabel")
+    logoT.Size = UDim2.fromScale(1, 1)
+    logoT.BackgroundTransparency = 1
+    logoT.Font = Enum.Font.GothamBlack
+    logoT.TextSize = 10
+    logoT.TextColor3 = T.accent2
+    logoT.Text = "LOL"
+    logoT.Parent = logo
 
     local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(1, -80, 1, 0)
-    title.Position = UDim2.fromOffset(16, 0)
+    title.Size = UDim2.new(0.5, 0, 1, 0)
+    title.Position = UDim2.fromOffset(52, 0)
     title.BackgroundTransparency = 1
     title.Font = Enum.Font.GothamBold
-    title.TextSize = 15
-    title.TextColor3 = T.accent2
+    title.TextSize = 16
+    title.TextColor3 = T.text
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Text = opts.Name or "LOL Hub"
     title.Parent = top
 
-    local closeBtn = Instance.new("TextButton")
-    closeBtn.Size = UDim2.fromOffset(30, 30)
-    closeBtn.Position = UDim2.new(1, -38, 0.5, -15)
-    closeBtn.BackgroundColor3 = T.accent
-    closeBtn.BackgroundTransparency = 0.15
-    closeBtn.Font = Enum.Font.GothamBold
-    closeBtn.TextSize = 12
-    closeBtn.TextColor3 = T.text
-    closeBtn.Text = "X"
-    closeBtn.Parent = top
-    corner(closeBtn, 9)
-    closeBtn.MouseButton1Click:Connect(function()
-        setOpen(false)
+    -- Close button — clean circle X (right, symmetric with logo)
+    local close = Instance.new("TextButton")
+    close.Size = UDim2.fromOffset(32, 32)
+    close.Position = UDim2.new(1, -44, 0.5, -16)
+    close.BackgroundColor3 = T.elev
+    close.BackgroundTransparency = 0.1
+    close.Font = Enum.Font.GothamBold
+    close.TextSize = 14
+    close.TextColor3 = T.dim
+    close.Text = "✕"
+    close.AutoButtonColor = false
+    close.Parent = top
+    corner(close, 16)
+    stroke(close, T.stroke, 1, 0.5)
+    close.MouseEnter:Connect(function()
+        tween(close, 0.15, { BackgroundColor3 = T.danger, TextColor3 = Color3.new(1, 1, 1) })
     end)
+    close.MouseLeave:Connect(function()
+        tween(close, 0.15, { BackgroundColor3 = T.elev, TextColor3 = T.dim })
+    end)
+    close.MouseButton1Click:Connect(function() setOpen(false) end)
 
-    -- drag window
+    -- drag
     do
         local dragging, start, startPos
         top.InputBegan:Connect(function(input)
@@ -364,19 +313,20 @@ function LOL:CreateWindow(opts)
         end)
     end
 
-    -- Sidebar
+    -- Sidebar (aligned width, even padding)
+    local SIDE_W = 120
     local side = Instance.new("Frame")
-    side.Size = UDim2.new(0, 112, 1, -56)
-    side.Position = UDim2.fromOffset(10, 50)
+    side.Size = UDim2.new(0, SIDE_W, 1, -64)
+    side.Position = UDim2.fromOffset(12, 56)
     side.BackgroundColor3 = T.side
-    side.BackgroundTransparency = 0.2
+    side.BackgroundTransparency = 0.25
     side.Parent = win
-    corner(side, 12)
-    stroke(side, T.stroke, 1, 0.45)
+    corner(side, 14)
+    stroke(side, T.stroke, 1, 0.55)
 
     local sideScroll = Instance.new("ScrollingFrame")
-    sideScroll.Size = UDim2.new(1, -8, 1, -8)
-    sideScroll.Position = UDim2.fromOffset(4, 4)
+    sideScroll.Size = UDim2.new(1, -12, 1, -12)
+    sideScroll.Position = UDim2.fromOffset(6, 6)
     sideScroll.BackgroundTransparency = 1
     sideScroll.BorderSizePixel = 0
     sideScroll.ScrollBarThickness = 2
@@ -384,12 +334,12 @@ function LOL:CreateWindow(opts)
     sideScroll.CanvasSize = UDim2.new()
     sideScroll.Parent = side
     local sideLay = Instance.new("UIListLayout")
-    sideLay.Padding = UDim.new(0, 5)
+    sideLay.Padding = UDim.new(0, 6)
     sideLay.Parent = sideScroll
 
     local content = Instance.new("ScrollingFrame")
-    content.Size = UDim2.new(1, -136, 1, -60)
-    content.Position = UDim2.fromOffset(128, 52)
+    content.Size = UDim2.new(1, -(SIDE_W + 28), 1, -68)
+    content.Position = UDim2.fromOffset(SIDE_W + 20, 56)
     content.BackgroundTransparency = 1
     content.BorderSizePixel = 0
     content.ScrollBarThickness = 3
@@ -398,10 +348,10 @@ function LOL:CreateWindow(opts)
     content.CanvasSize = UDim2.new()
     content.Parent = win
     local contentLay = Instance.new("UIListLayout")
-    contentLay.Padding = UDim.new(0, 10)
+    contentLay.Padding = UDim.new(0, 12)
     contentLay.SortOrder = Enum.SortOrder.LayoutOrder
     contentLay.Parent = content
-    pad(content, 4, 10, 6, 8)
+    pad(content, 4, 12, 4, 8)
 
     local Window = { _tabs = {}, _builders = {}, _first = nil, _order = 0 }
 
@@ -416,8 +366,8 @@ function LOL:CreateWindow(opts)
         for n, btn in pairs(self._tabs) do
             local on = n == name
             tween(btn, 0.2, {
-                BackgroundTransparency = on and 0.2 or 1,
-                BackgroundColor3 = on and T.tabOn or T.side,
+                BackgroundTransparency = on and 0.15 or 1,
+                BackgroundColor3 = on and T.accent or T.side,
             })
             btn.TextColor3 = on and T.text or T.dim
         end
@@ -431,8 +381,8 @@ function LOL:CreateWindow(opts)
         local sections = {}
 
         local btn = Instance.new("TextButton")
-        btn.Size = UDim2.new(1, -4, 0, 32)
-        btn.BackgroundColor3 = T.tabOn
+        btn.Size = UDim2.new(1, 0, 0, 34)
+        btn.BackgroundColor3 = T.accent
         btn.BackgroundTransparency = 1
         btn.Font = Enum.Font.GothamMedium
         btn.TextSize = 12
@@ -441,7 +391,7 @@ function LOL:CreateWindow(opts)
         btn.TextXAlignment = Enum.TextXAlignment.Left
         btn.AutoButtonColor = false
         btn.Parent = sideScroll
-        corner(btn, 9)
+        corner(btn, 10)
         self._tabs[name] = btn
         btn.MouseButton1Click:Connect(function() self:SelectTab(name) end)
 
@@ -474,14 +424,14 @@ function LOL:CreateWindow(opts)
                 card.Size = UDim2.new(1, 0, 0, 0)
                 card.AutomaticSize = Enum.AutomaticSize.Y
                 card.BackgroundColor3 = T.card
-                card.BackgroundTransparency = 0.2
+                card.BackgroundTransparency = 0.22
                 card.Parent = content
-                corner(card, 12)
-                stroke(card, T.stroke, 1, 0.4)
+                corner(card, 14)
+                stroke(card, T.stroke, 1, 0.5)
                 local lay = Instance.new("UIListLayout")
-                lay.Padding = UDim.new(0, 8)
+                lay.Padding = UDim.new(0, 10)
                 lay.Parent = card
-                pad(card, 12, 12, 12, 12)
+                pad(card, 14, 14, 14, 14)
 
                 for _, add in ipairs(controls) do add(card) end
             end)
@@ -497,7 +447,7 @@ function LOL:CreateWindow(opts)
                     row.Parent = parent
                     local state = c.CurrentValue or false
                     local lab = Instance.new("TextLabel")
-                    lab.Size = UDim2.new(1, -54, 1, 0)
+                    lab.Size = UDim2.new(1, -56, 1, 0)
                     lab.BackgroundTransparency = 1
                     lab.Font = Enum.Font.Gotham
                     lab.TextSize = 13
@@ -506,8 +456,8 @@ function LOL:CreateWindow(opts)
                     lab.Text = c.Name or "Toggle"
                     lab.Parent = row
                     local track = Instance.new("TextButton")
-                    track.Size = UDim2.fromOffset(46, 26)
-                    track.Position = UDim2.new(1, -46, 0.5, -13)
+                    track.Size = UDim2.fromOffset(48, 26)
+                    track.Position = UDim2.new(1, -48, 0.5, -13)
                     track.BackgroundColor3 = state and T.toggleOn or T.toggleOff
                     track.Text = ""
                     track.AutoButtonColor = false
@@ -559,7 +509,7 @@ function LOL:CreateWindow(opts)
                     corner(bg, 5)
                     local fill = Instance.new("Frame")
                     fill.Size = UDim2.new((value - min) / math.max(max - min, 1), 0, 1, 0)
-                    fill.BackgroundColor3 = T.slider
+                    fill.BackgroundColor3 = T.accent
                     fill.Parent = bg
                     corner(fill, 5)
                     local dragging = false
@@ -592,22 +542,22 @@ function LOL:CreateWindow(opts)
                 c = c or {}
                 table.insert(controls, function(parent)
                     local b = Instance.new("TextButton")
-                    b.Size = UDim2.new(1, 0, 0, 34)
+                    b.Size = UDim2.new(1, 0, 0, 36)
                     b.BackgroundColor3 = T.elev
-                    b.BackgroundTransparency = 0.15
+                    b.BackgroundTransparency = 0.12
                     b.Font = Enum.Font.GothamBold
                     b.TextSize = 12
                     b.TextColor3 = T.text
                     b.Text = c.Name or "Button"
                     b.AutoButtonColor = false
                     b.Parent = parent
-                    corner(b, 10)
-                    stroke(b, T.stroke, 1, 0.35)
+                    corner(b, 12)
+                    stroke(b, T.stroke, 1, 0.45)
                     b.MouseEnter:Connect(function()
-                        tween(b, 0.15, { BackgroundColor3 = T.accent, BackgroundTransparency = 0.05 })
+                        tween(b, 0.15, { BackgroundColor3 = T.accent, BackgroundTransparency = 0 })
                     end)
                     b.MouseLeave:Connect(function()
-                        tween(b, 0.15, { BackgroundColor3 = T.elev, BackgroundTransparency = 0.15 })
+                        tween(b, 0.15, { BackgroundColor3 = T.elev, BackgroundTransparency = 0.12 })
                     end)
                     b.MouseButton1Click:Connect(function()
                         if c.Callback then c.Callback() end
@@ -620,9 +570,9 @@ function LOL:CreateWindow(opts)
                 c = c or {}
                 table.insert(controls, function(parent)
                     local box = Instance.new("TextBox")
-                    box.Size = UDim2.new(1, 0, 0, 34)
+                    box.Size = UDim2.new(1, 0, 0, 36)
                     box.BackgroundColor3 = T.elev
-                    box.BackgroundTransparency = 0.15
+                    box.BackgroundTransparency = 0.12
                     box.PlaceholderText = c.PlaceholderText or c.Name or "..."
                     box.PlaceholderColor3 = T.dim
                     box.Text = c.CurrentValue or ""
@@ -632,8 +582,8 @@ function LOL:CreateWindow(opts)
                     box.ClearTextOnFocus = false
                     box.TextXAlignment = Enum.TextXAlignment.Left
                     box.Parent = parent
-                    corner(box, 10)
-                    stroke(box, T.stroke, 1, 0.35)
+                    corner(box, 12)
+                    stroke(box, T.stroke, 1, 0.45)
                     pad(box, 0, 0, 12, 12)
                     box.FocusLost:Connect(function()
                         if c.Callback then c.Callback(box.Text) end
@@ -672,15 +622,10 @@ function LOL:CreateWindow(opts)
         gui:Destroy()
     end
 
-    -- loading flash
     task.spawn(function()
-        task.wait(0.15)
+        task.wait(0.12)
         setOpen(true)
-        self:Notify({
-            Title = "LOL Hub",
-            Content = "Ready · drag LOL button · X closes",
-            Duration = 3,
-        })
+        self:Notify({ Title = "LOL Hub", Content = "Glass UI · drag LOL · ✕ closes", Duration = 3 })
     end)
 
     return Window
