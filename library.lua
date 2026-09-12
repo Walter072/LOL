@@ -229,187 +229,70 @@ function LOL:CreateWindow(opts)
     getgenv().__LOL_ToggleHub = function() setOpen(not hubOpen) end
 
     -- Top bar (balanced: title left, actions right)
-   -- ===== Title bar (sin franja negra) =====
-local TOP_H = 44
-  local hubOpen, minimized, animating = false, false, false
-local FULL = UDim2.fromOffset(W, H)
-local MINI = UDim2.fromOffset(W, TOP_H) -- solo la barra
+    local top = Instance.new("Frame")
+    top.Size = UDim2.new(1, 0, 0, 48)
+    top.BackgroundColor3 = T.top
+    top.BackgroundTransparency = 0.25
+    top.Parent = win
+    corner(top, 18)
+    local topFill = Instance.new("Frame")
+    topFill.Size = UDim2.new(1, 0, 0, 20)
+    topFill.Position = UDim2.new(0, 0, 1, -20)
+    topFill.BackgroundColor3 = T.top
+    topFill.BackgroundTransparency = 0.25
+    topFill.BorderSizePixel = 0
+    topFill.Parent = top
 
-local function setOpen(open)
-    if animating then return end
-    animating = true
-    hubOpen = open
-    minimized = false
-    if open then
-        win.Visible = true
-        side.Visible = true
-        content.Visible = true
-        tween(win, 0.35, { Size = FULL, BackgroundTransparency = bgAlpha })
-        tween(winStroke, 0.35, { Transparency = 0.35 })
-        fab.Text = "—"
-        task.delay(0.36, function() animating = false end)
-    else
-        tween(win, 0.28, { Size = UDim2.fromOffset(W, 0), BackgroundTransparency = 1 })
-        tween(winStroke, 0.28, { Transparency = 1 })
-        fab.Text = "LOL"
-        task.delay(0.3, function()
-            win.Visible = false
-            animating = false
-        end)
-    end
-end
+    -- Logo circle (left, like concept)
+    local logo = Instance.new("Frame")
+    logo.Size = UDim2.fromOffset(32, 32)
+    logo.Position = UDim2.fromOffset(12, 8)
+    logo.BackgroundColor3 = T.elev
+    logo.Parent = top
+    corner(logo, 16)
+    stroke(logo, T.accent2, 1.2, 0.3)
+    local logoT = Instance.new("TextLabel")
+    logoT.Size = UDim2.fromScale(1, 1)
+    logoT.BackgroundTransparency = 1
+    logoT.Font = Enum.Font.GothamBlack
+    logoT.TextSize = 10
+    logoT.TextColor3 = T.accent2
+    logoT.Text = "LOL"
+    logoT.Parent = logo
 
-local function setMinimized(on)
-    if not hubOpen or animating then return end
-    animating = true
-    minimized = on
-    if on then
-        side.Visible = false
-        content.Visible = false
-        tween(win, 0.28, { Size = MINI })
-        minBtn.Text = "□" -- restaurar
-    else
-        side.Visible = true
-        content.Visible = true
-        tween(win, 0.32, { Size = FULL })
-        minBtn.Text = "─"
-    end
-    task.delay(0.32, function() animating = false end)
-end
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(0.5, 0, 1, 0)
+    title.Position = UDim2.fromOffset(52, 0)
+    title.BackgroundTransparency = 1
+    title.Font = Enum.Font.GothamBold
+    title.TextSize = 16
+    title.TextColor3 = T.text
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Text = opts.Name or "LOL Hub"
+    title.Parent = top
 
-fab.MouseButton1Click:Connect(function()
-    if minimized then
-        setMinimized(false)
-    else
-        setOpen(not hubOpen)
-    end
-end)
+    -- Close button — clean circle X (right, symmetric with logo)
+    local close = Instance.new("TextButton")
+    close.Size = UDim2.fromOffset(32, 32)
+    close.Position = UDim2.new(1, -44, 0.5, -16)
+    close.BackgroundColor3 = T.elev
+    close.BackgroundTransparency = 0.1
+    close.Font = Enum.Font.GothamBold
+    close.TextSize = 14
+    close.TextColor3 = T.dim
+    close.Text = "✕"
+    close.AutoButtonColor = false
+    close.Parent = top
+    corner(close, 16)
+    stroke(close, T.stroke, 1, 0.5)
+    close.MouseEnter:Connect(function()
+        tween(close, 0.15, { BackgroundColor3 = T.danger, TextColor3 = Color3.new(1, 1, 1) })
+    end)
+    close.MouseLeave:Connect(function()
+        tween(close, 0.15, { BackgroundColor3 = T.elev, TextColor3 = T.dim })
+    end)
+    close.MouseButton1Click:Connect(function() setOpen(false) end)
 
-closeBtn.MouseButton1Click:Connect(function()
-    setOpen(false)
-end)
-
-minBtn.MouseButton1Click:Connect(function()
-    setMinimized(not minimized)
-end)
-  side.Position = UDim2.fromOffset(12, TOP_H + 8)
-side.Size = UDim2.new(0, 120, 1, -(TOP_H + 16))
-
-content.Position = UDim2.fromOffset(140, TOP_H + 8)
-content.Size = UDim2.new(1, -152, 1, -(TOP_H + 16))
-
-local top = Instance.new("Frame")
-top.Name = "TopBar"
-top.Size = UDim2.new(1, 0, 0, TOP_H)
-top.BackgroundColor3 = T.top
-top.BackgroundTransparency = 0.12
-top.BorderSizePixel = 0
-top.Parent = win
-corner(top, 18)
-
--- recorta solo las esquinas de abajo del top para que no “coma” el body
-local topClip = Instance.new("Frame")
-topClip.Size = UDim2.new(1, 0, 1, 12)
-topClip.BackgroundColor3 = T.top
-topClip.BackgroundTransparency = 0.12
-topClip.BorderSizePixel = 0
-topClip.Parent = top
--- NO uses un fill negro aparte debajo del top
-
--- línea fina de separación (glass, no negro sólido)
-local sep = Instance.new("Frame")
-sep.Size = UDim2.new(1, -24, 0, 1)
-sep.Position = UDim2.new(0, 12, 1, -1)
-sep.BackgroundColor3 = T.accent
-sep.BackgroundTransparency = 0.75
-sep.BorderSizePixel = 0
-sep.ZIndex = 2
-sep.Parent = top
-
--- Logo
-local logo = Instance.new("Frame")
-logo.Size = UDim2.fromOffset(28, 28)
-logo.Position = UDim2.fromOffset(12, 8)
-logo.BackgroundColor3 = T.elev
-logo.BorderSizePixel = 0
-logo.Parent = top
-corner(logo, 14)
-stroke(logo, T.accent2, 1.2, 0.25)
-
-local logoT = Instance.new("TextLabel")
-logoT.Size = UDim2.fromScale(1, 1)
-logoT.BackgroundTransparency = 1
-logoT.Font = Enum.Font.GothamBlack
-logoT.TextSize = 9
-logoT.TextColor3 = T.accent2
-logoT.Text = "LOL"
-logoT.Parent = logo
-
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, -120, 1, 0)
-title.Position = UDim2.fromOffset(48, 0)
-title.BackgroundTransparency = 1
-title.Font = Enum.Font.GothamBold
-title.TextSize = 15
-title.TextColor3 = T.text
-title.TextXAlignment = Enum.TextXAlignment.Left
-title.Text = opts.Name or "LOL Hub"
-title.Parent = top
-
--- Contenedor horizontal de botones (derecha)
-local actions = Instance.new("Frame")
-actions.Size = UDim2.fromOffset(72, 26)
-actions.Position = UDim2.new(1, -84, 0.5, -13)
-actions.BackgroundTransparency = 1
-actions.Parent = top
-
-local actionsLay = Instance.new("UIListLayout")
-actionsLay.FillDirection = Enum.FillDirection.Horizontal
-actionsLay.HorizontalAlignment = Enum.HorizontalAlignment.Right
-actionsLay.VerticalAlignment = Enum.VerticalAlignment.Center
-actionsLay.Padding = UDim.new(0, 6)
-actionsLay.Parent = actions
-
--- Minimizar (achica la GUI)
-local minBtn = Instance.new("TextButton")
-minBtn.Size = UDim2.fromOffset(26, 26)
-minBtn.BackgroundColor3 = T.elev
-minBtn.BackgroundTransparency = 0.05
-minBtn.Font = Enum.Font.GothamBold
-minBtn.TextSize = 12
-minBtn.TextColor3 = T.dim
-minBtn.Text = "─"
-minBtn.AutoButtonColor = false
-minBtn.Parent = actions
-corner(minBtn, 8)
-stroke(minBtn, T.stroke, 1, 0.45)
-
--- Cerrar (chiquito, limpio)
-local closeBtn = Instance.new("TextButton")
-closeBtn.Size = UDim2.fromOffset(26, 26)
-closeBtn.BackgroundColor3 = T.elev
-closeBtn.BackgroundTransparency = 0.05
-closeBtn.Font = Enum.Font.GothamBold
-closeBtn.TextSize = 12
-closeBtn.TextColor3 = T.dim
-closeBtn.Text = "✕"
-closeBtn.AutoButtonColor = false
-closeBtn.Parent = actions
-corner(closeBtn, 8)
-stroke(closeBtn, T.stroke, 1, 0.45)
-
-minBtn.MouseEnter:Connect(function()
-    tween(minBtn, 0.12, { BackgroundColor3 = T.accent, TextColor3 = T.text })
-end)
-minBtn.MouseLeave:Connect(function()
-    tween(minBtn, 0.12, { BackgroundColor3 = T.elev, TextColor3 = T.dim })
-end)
-closeBtn.MouseEnter:Connect(function()
-    tween(closeBtn, 0.12, { BackgroundColor3 = Color3.fromRGB(220, 70, 90), TextColor3 = Color3.new(1, 1, 1) })
-end)
-closeBtn.MouseLeave:Connect(function()
-    tween(closeBtn, 0.12, { BackgroundColor3 = T.elev, TextColor3 = T.dim })
-end)
     -- drag
     do
         local dragging, start, startPos
